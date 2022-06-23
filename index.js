@@ -6,6 +6,7 @@ const cors = require('cors')
 const app = express()
 app.use(morgan('tiny'))
 app.use(express.json())
+app.use(express.static('build'))
 app.use(cors())
 
 let persons = [
@@ -38,7 +39,7 @@ app.get('/api/info', (req, res) => {
 })
 
 
-app.get('/', (req, res) => {
+app.get('/index.html', (req, res) => {
     res.send('<h1>This is a phonebook for FSO Part3</h1>')
 })
 
