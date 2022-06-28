@@ -2,9 +2,23 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "content": "kkkkkk",
-  "number": "123353425"
+  "content": "aasd",
+  "number": "1"
 }
+
+###
+
+PUT http://localhost:3001/api/persons/1
+Content-Type: application/json
+
+{
+  "content":"Arto Hellas",
+  "number": "1"
+}
+
+###
+
+DELETE http://localhost:3001/api/persons/3
 
 ###
 

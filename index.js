@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const {response, request} = require("express");
 
 
 const app = express()
@@ -87,6 +88,18 @@ app.post('/api/persons', (request, response) => {
     persons = persons.concat(person)
 
     response.json(person)
+})
+
+app.put('/api/persons/:id', (request, response) => {
+    const body = request.body
+    const id = Number(request.params.id)
+    const person = {
+        name: body.content,
+        number: body.number,
+        date: new Date(),
+        id: id,
+    }
+    response.update(person)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
