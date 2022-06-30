@@ -12,6 +12,19 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+function validator1 (val) {
+  return /\d{2,3}-\d{5,6}/.test(val)
+}
+
+function validator2 (val) {
+  return val.length===9
+}
+
+const vals2 = [
+  { validator: validator1, msg: props => `${props.value} ei ole hyväksytty puhelinnumero!` }
+  ,{ validator: validator2, msg: 'Oikea pituus on kahdeksan numeroa!' }
+]
+
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -20,7 +33,8 @@ const personSchema = new mongoose.Schema({
   },
   number: {
     type: String,
-    required: true
+    validate: vals2,
+    required: [true, 'Numero vaaditaan!'],
   },
   date: Date,
 })
