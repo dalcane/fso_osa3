@@ -6,44 +6,25 @@ const { response, request } = require('express')
 const mongoose = require('mongoose')
 const Person = require('./models/person')
 const app = express()
-app.use(morgan('tiny'))
+
+morgan.token('nameNumber', function getId(res) {
+  return JSON.stringify(res.body)
+})
+
+app.use(morgan(':method :url :response-time :nameNumber'))
 app.use(express.json())
 app.use(express.static('build'))
 app.use(cors())
 
-let persons = [
-  {
-    name: 'Arto Hellas',
-    number: '040-123456',
-    id: 1
-  },
-  {
-    name: 'Ada Lovelace',
-    number: '39-44-5323523',
-    id: 2
-  },
-  {
-    name: 'Dan Abramov',
-    number: '12-43-234345',
-    id: 3
-  },
-  {
-    name: 'Mary Poppendieck',
-    number: '39-23-6423122',
-    id: 4
-  }
-]
-
-
-const length = 'The Phonebook has info for ' + persons.length + ' people.' + 'Today\'s date is ' + new Date()
-
 app.get('/api/info', (req, res) => {
-  res.json(length)
+  Person.find({})
+    .then(people => {
+      res.json('The phonebook has '+ people.length +' people in it. The date is: ' + new Date())
+    })
 })
 
-
 app.get('/index.html', (req, res) => {
-  res.send('<h1>This is a phonebook for FSO Part3</h1>')
+  res.send('<h1>This is a phonebook for FSO Part3.</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
@@ -125,6 +106,7 @@ const errorHandler = (error, request, response, next) => {
 }
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
